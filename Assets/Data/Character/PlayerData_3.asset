@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6267cc1aa3b9ed9409a4ef3f4d8c0fe6, type: 3}
+  m_Name: PlayerData_3
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterData
+  characterName: "\uD30C\uC6B0"
+  portrait: {fileID: -2413806693520163455, guid: 6e117ed7c6f22ae4783f2e1fc65e3678, type: 3}
+  maxHealth: 218
+  minSpeed: 3
+  maxSpeed: 7
+  defenseLevel: 61
+  maxSanity: 45
+  minSanity: -45
+  skill1: {fileID: 11400000, guid: 92f5878cc64d4ce4eaef22266a7943cc, type: 2}
+  skill2: {fileID: 11400000, guid: f60a3178e5246584492304d69836285c, type: 2}
+  skill3: {fileID: 11400000, guid: d579d7cb89bbebf479956d59fdde5836, type: 2}
+  defenseSkill: {fileID: 11400000, guid: d79c7647036efb04e8e4d0fac7ca5969, type: 2}

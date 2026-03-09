@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6267cc1aa3b9ed9409a4ef3f4d8c0fe6, type: 3}
+  m_Name: PlayerData_2
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterData
+  characterName: "\uC774\uC2A4"
+  portrait: {fileID: -2413806693520163455, guid: bebb13860f82b194eac99e9f25cdff41, type: 3}
+  level: 55
+  maxHealth: 218
+  minSpeed: 4
+  maxSpeed: 6
+  defenseLevel: 60
+  staggerThresholds: 98000000570000002b000000
+  maxSanity: 45
+  minSanity: -45
+  skill1: {fileID: 11400000, guid: 13e550837d2fc68468c41eaef2c136e9, type: 2}
+  skill2: {fileID: 11400000, guid: 13e550837d2fc68468c41eaef2c136e9, type: 2}
+  skill3: {fileID: 11400000, guid: 13e550837d2fc68468c41eaef2c136e9, type: 2}
+  defenseSkill: {fileID: 11400000, guid: d79c7647036efb04e8e4d0fac7ca5969, type: 2}
+  slashRes: 1
+  pierceRes: 1
+  bluntRes: 1
+  wrathRes: 1
+  lustRes: 1
+  slothRes: 1
+  gluttonyRes: 1
+  gloomRes: 1
+  prideRes: 1
+  envyRes: 1
