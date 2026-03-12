@@ -1,25 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-// [¼öÁ¤µÊ] ScriptableObject¸¦ »ó¼Ó¹Þµµ·Ï º¯°æ
 public abstract class BaseCoinEffect : ScriptableObject
 {
-    [Header("¹ßµ¿ Á¶°Ç")]
+    [Header("ë°œë™ ì¡°ê±´")]
     public EffectCondition triggerCondition;
 
     public abstract void Execute(BattleCharacter attacker, BattleCharacter target, RuntimeSkill skill);
 }
 
-// =========================================================
-// º¹ÇÕ Á¶°Ç ÆÇº° Å¬·¡½º (ÀÌ ºÎºÐÀº ÀÏ¹Ý Å¬·¡½º À¯Áö)
-// =========================================================
 [System.Serializable]
 public class CoinCondition
 {
-    [Header("Á¶°Ç ¼³Á¤")]
+    [Header("ì¡°ê±´ ì„¤ì •")]
     public ConditionTarget targetType;
     public ConditionCheckType checkType;
-    [Tooltip("°Ë»ç Å¸ÀÔÀÌ »óÅÂÀÌ»óÀÏ ¶§¸¸ ÀÛµ¿ÇÕ´Ï´Ù.")]
+    [Tooltip("ê²€ì‚¬ íƒ€ìž…ì´ ìƒíƒœì´ìƒì¼ ë•Œë§Œ ìž‘ë™í•©ë‹ˆë‹¤.")]
     public StatusEffectType statusEffect;
     public CompareOperator operatorType;
     public int value;
@@ -49,162 +45,5 @@ public class CoinCondition
             case CompareOperator.Equal: return currentValue == value;
             default: return false;
         }
-    }
-}
-
-// =========================================================
-// ÀÌÆåÆ® ¸ðµâ ÀÚ½Ä Å¬·¡½º ¸ðÀ½ (°¢°¢ CreateAssetMenu Ãß°¡)
-// =========================================================
-
-[CreateAssetMenu(menuName = "Combat/Coin Effects/Apply Status")]
-public class CoinEffect_ApplyStatus : BaseCoinEffect
-{
-    public StatusEffectType effectType;
-    public int potency;
-    public int count;
-
-    public override void Execute(BattleCharacter attacker, BattleCharacter target, RuntimeSkill skill)
-    {
-        target.AddStatusEffect(effectType, potency, count);
-    }
-}
-
-[CreateAssetMenu(menuName = "Combat/Coin Effects/Scale Status By Target")]
-public class CoinEffect_ScaleStatusByTarget : BaseCoinEffect
-{
-    public StatusEffectType referenceEffect;
-    public float divideBy = 3f;
-    public StatusEffectType effectToApply;
-    public int maxLimit = 5;
-
-    public override void Execute(BattleCharacter attacker, BattleCharacter target, RuntimeSkill skill)
-    {
-        StatusEffect refEffect = target.ActiveEffects.Find(e => e.effectType == referenceEffect);
-        int refPotency = refEffect != null ? refEffect.potency : 0;
-        int calculatedPotency = Mathf.FloorToInt(refPotency / divideBy);
-        calculatedPotency = Mathf.Min(calculatedPotency, maxLimit);
-
-        if (calculatedPotency > 0)
-        {
-            target.AddStatusEffect(effectToApply, calculatedPotency, 0);
-            Debug.Log($"[Effect] ºñ·Ê ¿¬»ê ¹ßµ¿: {target.OriginData.characterName}¿¡°Ô {effectToApply} {calculatedPotency} ºÎ¿©");
-        }
-    }
-}
-
-[CreateAssetMenu(menuName = "Combat/Coin Effects/Trigger Status")]
-public class CoinEffect_TriggerStatus : BaseCoinEffect
-{
-    public StatusEffectType effectToTrigger;
-    public int triggerTimes = 1;
-    public int countToDecrease = 1; // ¿©±â¼­´Â º¸Åë È½¼ö ¼Ò¸ð·®À» Á¤ÀÇ
-
-    public override void Execute(BattleCharacter attacker, BattleCharacter target, RuntimeSkill skill)
-    {
-        StatusEffect effect = target.ActiveEffects.Find(e => e.effectType == effectToTrigger);
-        if (effect != null && effect.potency > 0 && effect.count > 0)
-        {
-            int actualTriggers = 0;
-            // [¼öÁ¤] ·çÇÁ Á¶°Ç¿¡ effect.count > 0À» Á÷Á¢ È®ÀÎ
-            for (int i = 0; i < triggerTimes; i++)
-            {
-                if (effect.count > 0)
-                {
-                    target.TakeDamage(effect.potency);
-                    effect.count--; // [ÇÙ½É] ÇÑ ¹ø ÅÍÁú ¶§¸¶´Ù È½¼ö¸¦ Áï½Ã 1 Â÷°¨
-                    actualTriggers++;
-                }
-                else
-                {
-                    break; // È½¼ö°¡ ´Ù ¶³¾îÁö¸é ·çÇÁ Áß´Ü
-                }
-            }
-            // ÃÖÁ¾ÀûÀ¸·Î Ãß°¡ Â÷°¨ÀÌ ÇÊ¿äÇÏ´Ù¸é Àû¿ë (ÀÌ¹Ì ´Ù ±ð¾Ò´Ù¸é 0 À¯Áö)
-            // effect.count -= (countToDecrease - 1); // ±âÈ¹¿¡ µû¶ó Á¶Á¤
-
-            Debug.Log($"[Effect] {effectToTrigger} {actualTriggers}È¸ ¿¬¼Ó ¹ßµ¿! ÃÑ {effect.potency * actualTriggers} ÇÇÇØ. ³²Àº È½¼ö: {Mathf.Max(0, effect.count)}");
-        }
-    }
-}
-
-[CreateAssetMenu(menuName = "Combat/Coin Effects/Tremor Burst")]
-public class CoinEffect_TremorBurst : BaseCoinEffect
-{
-    public override void Execute(BattleCharacter attacker, BattleCharacter target, RuntimeSkill skill)
-    {
-        StatusEffect tremor = target.ActiveEffects.Find(e => e.effectType == StatusEffectType.Tremor);
-        if (tremor != null && tremor.potency > 0 && tremor.count > 0)
-        {
-            target.AddStagger(tremor.potency);
-            tremor.count -= 1;
-            Debug.Log($"[Effect] Áøµ¿ Æø¹ß ¹ßµ¿! {target.OriginData.characterName}ÀÇ ÈåÆ®·¯Áü °ÔÀÌÁö°¡ {tremor.potency} Áõ°¡Çß½À´Ï´Ù.");
-        }
-    }
-}
-
-[CreateAssetMenu(menuName = "Combat/Coin Effects/Advanced Power Buff")]
-public class CoinEffect_AdvancedPowerBuff : BaseCoinEffect
-{
-    [Header("¹ßµ¿ Á¶°Ç ¸®½ºÆ®")]
-    public List<CoinCondition> conditions = new List<CoinCondition>();
-    [Header("À§·Â ¹öÇÁ ¼³Á¤")]
-    public PowerModifierType targetPowerType;
-    public int powerBonus = 1;
-
-    public override void Execute(BattleCharacter attacker, BattleCharacter target, RuntimeSkill skill)
-    {
-        foreach (var cond in conditions)
-        {
-            if (!cond.Evaluate(attacker, target)) return;
-        }
-
-        switch (targetPowerType)
-        {
-            case PowerModifierType.BasePower: skill.CurrentBasePower += powerBonus; break;
-            case PowerModifierType.CoinPower: skill.CurrentCoinPower += powerBonus; break;
-            case PowerModifierType.ClashPower: skill.ClashPowerModifier += powerBonus; break;
-            case PowerModifierType.FinalPower: skill.FinalPowerModifier += powerBonus; break;
-        }
-    }
-}
-
-[CreateAssetMenu(menuName = "Combat/Coin Effects/Add Coin Power By Status")]
-public class CoinEffect_AddCoinPowerByStatus : BaseCoinEffect
-{
-    public StatusEffectType targetStatus = StatusEffectType.Bleed;
-    public int divisor = 6;
-    public int maxBonus = 2;
-
-    public override void Execute(BattleCharacter attacker, BattleCharacter target, RuntimeSkill skill)
-    {
-        StatusEffect effect = target.ActiveEffects.Find(e => e.effectType == targetStatus);
-        int potency = effect != null ? effect.potency : 0;
-        int bonus = Mathf.FloorToInt(potency / divisor);
-        bonus = Mathf.Min(bonus, maxBonus);
-
-        if (bonus > 0)
-            skill.CurrentCoinPower += bonus;
-    }
-}
-
-[CreateAssetMenu(menuName = "Combat/Coin Effects/Amplify Damage By Debuffs")]
-public class CoinEffect_AmplifyDamageByDebuffs : BaseCoinEffect
-{
-    public float bonusPerDebuff = 0.1f;
-    public float maxBonus = 1.0f;
-
-    public override void Execute(BattleCharacter attacker, BattleCharacter target, RuntimeSkill skill)
-    {
-        int debuffCount = 0;
-        StatusEffectType[] debuffs = { StatusEffectType.Burn, StatusEffectType.Bleed, StatusEffectType.Tremor, StatusEffectType.Rupture, StatusEffectType.Sinking };
-
-        foreach (var debuff in debuffs)
-        {
-            var effect = target.ActiveEffects.Find(e => e.effectType == debuff);
-            if (effect != null && effect.count > 0 && effect.potency > 0) debuffCount++;
-        }
-
-        float totalBonus = Mathf.Min(debuffCount * bonusPerDebuff, maxBonus);
-        skill.DamageMultiplierBonus += totalBonus;
     }
 }

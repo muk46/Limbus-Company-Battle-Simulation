@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class UnitCardUI : MonoBehaviour
 {
@@ -11,7 +12,11 @@ public class UnitCardUI : MonoBehaviour
     [SerializeField] private TMP_Text speedText;
     [SerializeField] private Slider hpSlider;
     [SerializeField] private TMP_Text hpText;
-    [SerializeField] private TMP_Text spText; // Á¤½Å·Â(Sanity) ÅØ½ºÆ® Ãß°¡
+    [SerializeField] private TMP_Text spText;
+
+    [Header("Status Effect Icons")]
+    [SerializeField] private Transform statusIconContainer;
+    [SerializeField] private GameObject statusIconPrefab;
 
     public void Setup(BattleCharacter character)
     {
@@ -23,7 +28,6 @@ public class UnitCardUI : MonoBehaviour
             hpSlider.maxValue = _targetCharacter.OriginData.maxHealth;
         }
 
-        // Ãß°¡: ³» °ÔÀÓ ¿ÀºêÁ§Æ®¿¡ TargetSlotÀÌ ÀÖ´Ù¸é µ¥ÀÌÅÍ ¿¬°á
         TargetSlot targetSlot = GetComponent<TargetSlot>();
         if (targetSlot != null)
         {
@@ -40,13 +44,32 @@ public class UnitCardUI : MonoBehaviour
         if (hpSlider != null) hpSlider.value = _targetCharacter.CurrentHealth;
         if (hpText != null) hpText.text = $"{_targetCharacter.CurrentHealth}/{_targetCharacter.OriginData.maxHealth}";
 
-        // ¼öÁ¤: min - max ¹üÀ§ ÅØ½ºÆ® ´ë½Å, °áÁ¤µÈ CurrentSpeed ÇÏ³ª¸¸ Ãâ·ÂÇÕ´Ï´Ù.
         if (speedText != null)
             speedText.text = _targetCharacter.CurrentSpeed.ToString();
 
         if (spText != null)
-        {
             spText.text = $"SP: {_targetCharacter.CurrentSanity}";
+
+        UpdateStatusIcons();
+    }
+
+    private void UpdateStatusIcons()
+    {
+        if (statusIconContainer == null || statusIconPrefab == null) return;
+
+        // ê¸°ì¡´ ì•„ì´ì½˜ ì •ë¦¬
+        for (int i = statusIconContainer.childCount - 1; i >= 0; i--)
+            Destroy(statusIconContainer.GetChild(i).gameObject);
+
+        // í™œì„± ìƒíƒœì´ìƒ ì•„ì´ì½˜ ìƒì„±
+        foreach (var effect in _targetCharacter.ActiveEffects)
+        {
+            if (effect.count <= 0) continue;
+
+            GameObject icon = Instantiate(statusIconPrefab, statusIconContainer);
+            StatusIconUI iconUI = icon.GetComponent<StatusIconUI>();
+            if (iconUI != null)
+                iconUI.Set(effect.effectType, effect.potency, effect.count);
         }
     }
 }

@@ -555,6 +555,7 @@ RectTransform:
   - {fileID: 4145061645053002635}
   - {fileID: 5627240150460775768}
   - {fileID: 9078433052194673775}
+  - {fileID: 7750488772208196717}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -616,6 +617,8 @@ MonoBehaviour:
   hpSlider: {fileID: 6662624869531960258}
   hpText: {fileID: 128999248593711307}
   spText: {fileID: 3262580095754012354}
+  statusIconContainer: {fileID: 7750488772208196717}
+  statusIconPrefab: {fileID: 4830061801209208203, guid: 0f6e4ac9bdd4baa49b91b38e74463f61, type: 3}
 --- !u!114 &6382109582375425665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -674,6 +677,68 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 52.128082, y: 53.455597}
   m_EdgeRadius: 0
+--- !u!1 &7772773446065707216
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7750488772208196717}
+  - component: {fileID: 7412165228594177932}
+  m_Layer: 5
+  m_Name: "\uC0C1\uD0DC\uC774\uC0C1"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7750488772208196717
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7772773446065707216}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2903627158673893471}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.0001297, y: -84.4}
+  m_SizeDelta: {x: 180, y: 26.7894}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7412165228594177932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7772773446065707216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &8002126627843454990
 GameObject:
   m_ObjectHideFlags: 0

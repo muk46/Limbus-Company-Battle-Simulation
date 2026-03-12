@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
   skillName: "\uD6C4\uB9AC\uAE30"
   skillIcon: {fileID: -2413806693520163455, guid: db11238bdf7f2d44a9b4785cec005344, type: 3}
-  damageType: 0
-  sinAffinity: 2
-  attackLevel: 35
-  basePower: 3
-  coinPower: 3
-  coinCount: 3
+  damageType: 2
+  sinAffinity: 1
+  attackLevel: 43
+  basePower: 4
+  coinPower: 6
+  coinCount: 1
   coins: []

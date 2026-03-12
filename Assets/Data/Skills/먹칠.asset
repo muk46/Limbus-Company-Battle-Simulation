@@ -24,13 +24,13 @@ MonoBehaviour:
   - coinDescription: 
     isUnbreakable: 0
     coinEffects:
-    - {fileID: 11400000, guid: 93ba83d524c63ea4da1fccd6a58a99c2, type: 2}
-  - coinDescription: 
-    isUnbreakable: 0
-    coinEffects:
     - {fileID: 11400000, guid: 76dd0e71f41b2a04fbe6d501bb2e9a96, type: 2}
   - coinDescription: 
     isUnbreakable: 0
     coinEffects:
-    - {fileID: 11400000, guid: 7b00dc58f0dc6ca4da647c2c35656ae1, type: 2}
-    - {fileID: 11400000, guid: bfaff5f493e46964dbc4e0df9608c253, type: 2}
+    - {fileID: 11400000, guid: 0b93420351f4dd34bab7b8ca8fabf80f, type: 2}
+  - coinDescription: 
+    isUnbreakable: 0
+    coinEffects:
+    - {fileID: 11400000, guid: 9b81fd5dbf55c064b9a556c78dbb7149, type: 2}
+    - {fileID: 11400000, guid: 9e9877a0d176512449015d23b066bd74, type: 2}

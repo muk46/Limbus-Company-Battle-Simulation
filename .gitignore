@@ -8,3 +8,5 @@
 .vs/
 *.csproj
 *.sln
+Assets/_backup/
+Assets/_backup.meta

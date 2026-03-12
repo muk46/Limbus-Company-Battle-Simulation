@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: New Coin Effect_Amplify Damage By Debuffs
+  m_Script: {fileID: 11500000, guid: 8928e8153a8dc8b419faedc300561680, type: 3}
+  m_Name: "3\uCF54\uC7782"
   m_EditorClassIdentifier: Assembly-CSharp::CoinEffect_AmplifyDamageByDebuffs
   triggerCondition: 3
   bonusPerDebuff: 0.1

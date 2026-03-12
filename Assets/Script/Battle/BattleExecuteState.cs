@@ -14,102 +14,121 @@ public class BattleExecuteState : IBattleState
 
     public void Enter()
     {
-        Debug.Log("[System] 실행 단계(Execute) 시작: 속도 순서로 행동을 처리합니다.");
+        Debug.Log("[System] ���� ����(Execute) ������ ����: �ӵ� ������ �ൿ�� �����մϴ�.");
+
+        ClashCalculator.ResetCustomIndex();
+
         ResonanceCalculator.ApplyResonance(_manager.ActionQueue, _manager.PlayerTeam);
+
         _manager.RunRoutine(ExecuteActionsRoutine());
     }
 
     public void Execute() { }
-    public void Exit()    { }
+    public void Exit() { }
 
     private IEnumerator ExecuteActionsRoutine()
     {
-        var sorted    = _manager.ActionQueue.OrderByDescending(a => a.Attacker.CurrentSpeed).ToList();
-        var remaining = new List<BattleAction>(sorted);
+        var sortedActions = _manager.ActionQueue.OrderByDescending(action => action.Attacker.CurrentSpeed).ToList();
+        List<BattleAction> remainingActions = new List<BattleAction>(sortedActions);
 
-        while (remaining.Count > 0)
+        while (remainingActions.Count > 0)
         {
-            var current = remaining[0];
-            remaining.RemoveAt(0);
-            _manager.ActionQueue.Remove(current);
+            BattleAction currentAction = remainingActions[0];
+            remainingActions.RemoveAt(0);
+            _manager.ActionQueue.Remove(currentAction);
 
-            if (current.Attacker.CurrentHealth <= 0) continue;
+            if (currentAction.Attacker.CurrentHealth <= 0) continue;
 
-            if (current.Attacker.StaggerLevel > 0)
+            if (currentAction.Attacker.StaggerLevel > 0)
             {
-                Debug.Log($"[System] {current.Attacker.OriginData.characterName}은(는) 스태거 상태로 행동이 취소되었습니다.");
+                Debug.Log($"[System] {currentAction.Attacker.OriginData.characterName}��(��) ��Ʈ���� ���·� �ൿ�� ��ҵǾ����ϴ�.");
                 continue;
             }
 
-            Debug.Log($"[System] {current.Attacker.OriginData.characterName}의 턴! (속도: {current.Attacker.CurrentSpeed})");
+            Debug.Log($"[System] {currentAction.Attacker.OriginData.characterName}�� ��! (�ӵ�: {currentAction.Attacker.CurrentSpeed})");
 
-            TriggerOnUseCoinEffects(current);
+            if (currentAction.UsedSkill.OriginData.coins != null)
+            {
+                foreach (var coin in currentAction.UsedSkill.OriginData.coins)
+                {
+                    if (coin.coinEffects == null) continue;
+                    foreach (var effect in coin.coinEffects)
+                    {
+                        if (effect.triggerCondition == EffectCondition.OnUse)
+                        {
+                            effect.Execute(currentAction.Attacker, currentAction.Target, currentAction.UsedSkill);
+                        }
+                    }
+                }
+            }
 
-            // ── 클래시 감지 ──────────────────────────────
-            var opponent = remaining.FirstOrDefault(a => a.Attacker == current.Target);
-            bool isClash = ShouldClash(current, opponent);
+            BattleAction opponentAction = remainingActions.FirstOrDefault(a => a.Attacker == currentAction.Target);
+            bool isClash = false;
+
+            if (opponentAction != null && opponentAction.Attacker.StaggerLevel == 0)
+            {
+                if (opponentAction.Target == currentAction.Attacker)
+                {
+                    isClash = true;
+                    Debug.Log($"[System] {currentAction.Attacker.OriginData.characterName}�� {opponentAction.Attacker.OriginData.characterName}�� ��ȣ Ÿ���� ��(Clash) �߻�!");
+                }
+                else if (currentAction.Attacker.CurrentSpeed > opponentAction.Attacker.CurrentSpeed)
+                {
+                    isClash = true;
+                    opponentAction.Target = currentAction.Attacker;
+                    Debug.Log($"[System] �� ����ä�� ����: {currentAction.Attacker.OriginData.characterName}(�ӵ� {currentAction.Attacker.CurrentSpeed})�� {opponentAction.Attacker.OriginData.characterName}(�ӵ� {opponentAction.Attacker.CurrentSpeed})�� �ü��� ����ɴϴ�.");
+                }
+            }
 
             if (isClash)
             {
-                TriggerOnUseCoinEffects(opponent);
+                remainingActions.Remove(opponentAction);
+                _manager.ActionQueue.Remove(opponentAction);
 
-                remaining.Remove(opponent);
-                _manager.ActionQueue.Remove(opponent);
+                if (opponentAction.UsedSkill.OriginData.coins != null)
+                {
+                    foreach (var coin in opponentAction.UsedSkill.OriginData.coins)
+                    {
+                        if (coin.coinEffects == null) continue;
+                        foreach (var effect in coin.coinEffects)
+                        {
+                            if (effect.triggerCondition == EffectCondition.OnUse)
+                            {
+                                effect.Execute(opponentAction.Attacker, opponentAction.Target, opponentAction.UsedSkill);
+                            }
+                        }
+                    }
+                }
 
-                if (current.Attacker.DeckSystem != null)  current.Attacker.DeckSystem.ConsumeSkill();
-                if (opponent.Attacker.DeckSystem != null) opponent.Attacker.DeckSystem.ConsumeSkill();
+                if (currentAction.Attacker.DeckSystem != null) currentAction.Attacker.DeckSystem.ConsumeSkill();
+                if (opponentAction.Attacker.DeckSystem != null) opponentAction.Attacker.DeckSystem.ConsumeSkill();
 
-                _manager.ChangeState(new BattleClashState(
-                    _manager,
-                    current.Attacker,  current.UsedSkill,
-                    opponent.Attacker, opponent.UsedSkill));
+                _manager.ChangeState(new BattleClashState(_manager, currentAction.Attacker, currentAction.UsedSkill, opponentAction.Attacker, opponentAction.UsedSkill));
                 yield break;
             }
-
-            // ── 일방적 공격 ──────────────────────────────
-            if (current.Target.CurrentHealth <= 0)
+            else
             {
-                Debug.Log($"[System] 타겟({current.Target.OriginData.characterName})이 이미 사망하여 행동을 건너뜁니다.");
-                continue;
+                if (currentAction.Target.CurrentHealth <= 0)
+                {
+                    Debug.Log($"[System] Ÿ��({currentAction.Target.OriginData.characterName})�� �̹� ����Ͽ� �ൿ�� ����մϴ�.");
+                    continue;
+                }
+
+                ClashCalculator.ResolveClash(currentAction.Attacker, currentAction.UsedSkill, currentAction.Target);
+
+                if (currentAction.Attacker.DeckSystem != null)
+                {
+                    currentAction.Attacker.DeckSystem.ConsumeSkill();
+                }
+
+                yield return new WaitForSeconds(1.0f);
             }
-
-            ClashCalculator.ResolveClash(current.Attacker, current.UsedSkill, current.Target);
-            current.Attacker.DeckSystem?.ConsumeSkill();
-
-            yield return new WaitForSeconds(1.0f);
         }
 
-        // 턴 종료 상태이상 처리
-        foreach (var c in _manager.PlayerTeam.Where(p => p.CurrentHealth > 0))
-            c.ProcessTurnEndStatusEffects();
-        foreach (var c in _manager.EnemyTeam.Where(e => e.CurrentHealth > 0))
-            c.ProcessTurnEndStatusEffects();
+        foreach (var chara in _manager.PlayerTeam.Where(p => p.CurrentHealth > 0)) chara.ProcessTurnEndStatusEffects();
+        foreach (var chara in _manager.EnemyTeam.Where(e => e.CurrentHealth > 0)) chara.ProcessTurnEndStatusEffects();
 
         _manager.ActionQueue.Clear();
         _manager.ChangeState(new BattleWaitState(_manager));
-    }
-
-    /// <summary>두 행동이 클래시해야 하는지 판단합니다.</summary>
-    private bool ShouldClash(BattleAction current, BattleAction opponent)
-    {
-        if (opponent == null) return false;
-        if (opponent.Attacker.StaggerLevel > 0) return false;
-        return opponent.Target == current.Attacker;
-    }
-
-    private void TriggerOnUseCoinEffects(BattleAction action)
-    {
-        if (action.UsedSkill.OriginData.coins == null) return;
-
-        foreach (var coin in action.UsedSkill.OriginData.coins)
-        {
-            if (coin?.coinEffects == null) continue;
-            foreach (var effect in coin.coinEffects)
-            {
-                if (effect == null) continue;
-                if (effect.triggerCondition == EffectCondition.OnUse)
-                    effect.Execute(action.Attacker, action.Target, action.UsedSkill);
-            }
-        }
     }
 }

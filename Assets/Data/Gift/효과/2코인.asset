@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: New Coin Effect_Trigger Status
-  m_EditorClassIdentifier: Assembly-CSharp::CoinEffect_TriggerStatus
+  m_Script: {fileID: 11500000, guid: 75901fb870036334fb274b130cc1fa71, type: 3}
+  m_Name: "2\uCF54\uC778"
+  m_EditorClassIdentifier: Assembly-CSharp::CoinEffect_ApplyStatus
   triggerCondition: 4
-  effectToTrigger: 2
-  triggerTimes: 3
-  countToDecrease: 3
+  effectType: 2
+  potency: 3
+  count: 0

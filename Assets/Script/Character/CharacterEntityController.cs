@@ -15,18 +15,29 @@ public class CharacterEntityController : MonoBehaviour
     {
         Model = characterData;
 
+        // [추가] 모델의 데이터가 변할 때 UI를 갱신하도록 이벤트 구독
+        Model.OnUIUpdateRequest += UpdateUI;
+
         if (spriteRenderer != null && Model.OriginData.portrait != null)
         {
             spriteRenderer.sprite = Model.OriginData.portrait;
         }
 
-        // 추가: 내 캐릭터 데이터를 내장된 UI 카드에 전달하여 업데이트
         if (myStatusUI != null)
         {
             myStatusUI.Setup(Model);
         }
 
         Debug.Log($"[System] {Model.OriginData.characterName}의 월드 엔티티가 생성되었습니다.");
+    }
+
+    // [추가] 오브젝트 파괴 시 메모리 누수를 방지하기 위한 구독 해제
+    private void OnDestroy()
+    {
+        if (Model != null)
+        {
+            Model.OnUIUpdateRequest -= UpdateUI;
+        }
     }
     public void UpdateUI()
     {

@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6267cc1aa3b9ed9409a4ef3f4d8c0fe6, type: 3}
   m_Name: wjr
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
-  characterName: wjr
+  characterName: "\uC801"
   portrait: {fileID: -2413806693520163455, guid: 7e408ea2122885e47bc695ab6367158d, type: 3}
   level: 40
-  maxHealth: 551
+  maxHealth: 208
   minSpeed: 1
-  maxSpeed: 4
-  defenseLevel: 42
+  maxSpeed: 1
+  defenseLevel: 31
   staggerThresholds: 
   maxSanity: 45
   minSanity: -45
@@ -27,12 +27,12 @@ MonoBehaviour:
   skill3: {fileID: 11400000, guid: fb065d1648ba9fd4ab1013e8738e294a, type: 2}
   defenseSkill: {fileID: 11400000, guid: fb065d1648ba9fd4ab1013e8738e294a, type: 2}
   slashRes: 1
-  pierceRes: 0.75
-  bluntRes: 0.75
-  wrathRes: 1
-  lustRes: 0.5
-  slothRes: 1
-  gluttonyRes: 1
-  gloomRes: 1
-  prideRes: 1
-  envyRes: 1
+  pierceRes: 1
+  bluntRes: 1
+  wrathRes: 0.75
+  lustRes: 0.75
+  slothRes: 0.5
+  gluttonyRes: 2
+  gloomRes: 0.5
+  prideRes: 0.75
+  envyRes: 0.75

@@ -11,9 +11,9 @@ public class BattleInitState : IBattleState
 
     public void Enter()
     {
-        Debug.Log("[System] Init State ÁøÀÔ");
-        // ÃÊ±â µ¥ÀÌÅÍ ¼¼ÆÃÀº BattleManager.Start()¿¡¼­ ¿Ï·áµÊ.
-        // ¹Ù·Î ´ë±â(Wait) »óÅÂ·Î ÀüÈ¯ÇÕ´Ï´Ù.
+        Debug.Log("[System] Init State ì§„ì…");
+        // ì´ˆê¸° ë°ì´í„° ì„¸íŒ…ì€ BattleManager.Start()ì—ì„œ ì™„ë£Œë¨.
+        // ë°”ë¡œ ëŒ€ê¸°(Wait) ìƒíƒœë¡œ ì „í™˜í•©ë‹ˆë‹¤.
         _manager.ChangeState(new BattleWaitState(_manager));
     }
 
@@ -21,6 +21,6 @@ public class BattleInitState : IBattleState
 
     public void Exit()
     {
-        Debug.Log("[System] Init State Á¾·á");
+        Debug.Log("[System] Init State ì¢…ë£Œ");
     }
 }

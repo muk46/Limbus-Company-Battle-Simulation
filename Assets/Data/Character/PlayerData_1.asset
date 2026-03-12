@@ -14,13 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   characterName: "\uC774\uC0C1"
   portrait: {fileID: -2413806693520163455, guid: 8f366f31be16b8242a8c2fc84a618848, type: 3}
+  level: 1
   maxHealth: 248
   minSpeed: 3
   maxSpeed: 8
   defenseLevel: 60
+  staggerThresholds: 
   maxSanity: 45
   minSanity: -45
-  skill1: {fileID: 11400000, guid: a28cc425211d8cc4d8821c39d36c7882, type: 2}
+  skill1: {fileID: 11400000, guid: 960aabbd60ad3b3459deab679d1409ab, type: 2}
   skill2: {fileID: 11400000, guid: 960aabbd60ad3b3459deab679d1409ab, type: 2}
-  skill3: {fileID: 11400000, guid: f452c3c1a2e0a0f42a7aa95630387287, type: 2}
+  skill3: {fileID: 11400000, guid: 960aabbd60ad3b3459deab679d1409ab, type: 2}
   defenseSkill: {fileID: 11400000, guid: d79c7647036efb04e8e4d0fac7ca5969, type: 2}
+  slashRes: 1
+  pierceRes: 1
+  bluntRes: 1
+  wrathRes: 1
+  lustRes: 1
+  slothRes: 1
+  gluttonyRes: 1
+  gloomRes: 1
+  prideRes: 1
+  envyRes: 1

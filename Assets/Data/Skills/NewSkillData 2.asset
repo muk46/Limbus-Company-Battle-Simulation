@@ -20,5 +20,13 @@ MonoBehaviour:
   basePower: 4
   coinPower: 4
   coinCount: 2
-  skillLevelEffects: []
-  coins: []
+  coins:
+  - coinDescription: 
+    isUnbreakable: 0
+    coinEffects:
+    - {fileID: 11400000, guid: 75d2065efce2c8f4f93a47383ffbac7f, type: 2}
+  - coinDescription: 
+    isUnbreakable: 0
+    coinEffects:
+    - {fileID: 11400000, guid: 75d2065efce2c8f4f93a47383ffbac7f, type: 2}
+    - {fileID: 11400000, guid: ac14c15484ab3a944ab289b8ef4c0f79, type: 2}
