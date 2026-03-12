@@ -97,7 +97,7 @@ BattleWaitState → BattleExecuteState → BattleClashState → BattleWaitState
 |----------|-----------|
 | 화상(Burn) | 턴 종료 시 고정 피해 |
 | 출혈(Bleed) | 코인 판정마다 고정 피해 |
-| 전율(Tremor) | 폭발 시 흐트러짐 선 전진 |
+| 전동(Tremor) | 폭발 시 흐트러짐 선 전진 |
 | 파열(Rupture) | 피격 시 추가 고정 피해 |
 | 침잠(Sinking) | 피격 시 정신력 또는 HP 감소 |
 | 호흡(Poise) | 타격 시 확률적 치명타 (1.2배) |
