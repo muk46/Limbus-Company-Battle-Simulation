@@ -14,7 +14,7 @@ public class BattleExecuteState : IBattleState
 
     public void Enter()
     {
-        Debug.Log("[System] ���� ����(Execute) ������ ����: �ӵ� ������ �ൿ�� �����մϴ�.");
+        Debug.Log("[System] 실행 단계(Execute) 상태로 진입: 속도 순서대로 행동을 실행합니다.");
 
         ClashCalculator.ResetCustomIndex();
 
@@ -41,11 +41,11 @@ public class BattleExecuteState : IBattleState
 
             if (currentAction.Attacker.StaggerLevel > 0)
             {
-                Debug.Log($"[System] {currentAction.Attacker.OriginData.characterName}��(��) ��Ʈ���� ���·� �ൿ�� ��ҵǾ����ϴ�.");
+                Debug.Log($"[System] {currentAction.Attacker.OriginData.characterName}은(는) 흐트러짐 상태로 행동이 취소되었습니다.");
                 continue;
             }
 
-            Debug.Log($"[System] {currentAction.Attacker.OriginData.characterName}�� ��! (�ӵ�: {currentAction.Attacker.CurrentSpeed})");
+            Debug.Log($"[System] {currentAction.Attacker.OriginData.characterName}의 턴! (속도: {currentAction.Attacker.CurrentSpeed})");
 
             if (currentAction.UsedSkill.OriginData.coins != null)
             {
@@ -70,13 +70,13 @@ public class BattleExecuteState : IBattleState
                 if (opponentAction.Target == currentAction.Attacker)
                 {
                     isClash = true;
-                    Debug.Log($"[System] {currentAction.Attacker.OriginData.characterName}�� {opponentAction.Attacker.OriginData.characterName}�� ��ȣ Ÿ���� ��(Clash) �߻�!");
+                    Debug.Log($"[System] {currentAction.Attacker.OriginData.characterName}와 {opponentAction.Attacker.OriginData.characterName}의 상호 타겟으로 합(Clash) 발생!");
                 }
                 else if (currentAction.Attacker.CurrentSpeed > opponentAction.Attacker.CurrentSpeed)
                 {
                     isClash = true;
                     opponentAction.Target = currentAction.Attacker;
-                    Debug.Log($"[System] �� ����ä�� ����: {currentAction.Attacker.OriginData.characterName}(�ӵ� {currentAction.Attacker.CurrentSpeed})�� {opponentAction.Attacker.OriginData.characterName}(�ӵ� {opponentAction.Attacker.CurrentSpeed})�� �ü��� ����ɴϴ�.");
+                    Debug.Log($"[System] 속도 우위에 의한 강제 합: {currentAction.Attacker.OriginData.characterName}(속도 {currentAction.Attacker.CurrentSpeed})이 {opponentAction.Attacker.OriginData.characterName}(속도 {opponentAction.Attacker.CurrentSpeed})의 타겟을 가로챘습니다.");
                 }
             }
 
@@ -110,7 +110,7 @@ public class BattleExecuteState : IBattleState
             {
                 if (currentAction.Target.CurrentHealth <= 0)
                 {
-                    Debug.Log($"[System] Ÿ��({currentAction.Target.OriginData.characterName})�� �̹� ����Ͽ� �ൿ�� ����մϴ�.");
+                    Debug.Log($"[System] 타겟({currentAction.Target.OriginData.characterName})이 이미 사망하여 행동을 건너뜁니다.");
                     continue;
                 }
 
